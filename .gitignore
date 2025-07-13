@@ -45,3 +45,6 @@ dist/
 # Mac/Linux system files
 .DS_Store
 Thumbs.db
+
+# DATABASE
+database/*
