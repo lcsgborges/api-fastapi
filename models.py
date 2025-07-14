@@ -20,7 +20,7 @@ class Cliente(Base):
     
     id = Column("id", Integer, primary_key=True, autoincrement=True)
     nome = Column("nome", String, nullable=False)
-    telefone = Column("telefone", String, nullable=False)
+    telefone = Column("telefone", String, nullable=False, unique=True)
     endereco = Column("endereco", Text)
     
     def __init__(self, nome, telefone, endereco=None):
@@ -65,9 +65,10 @@ class Pedido(Base):
     pagamento = Column("pagamento", String, nullable=False)
     id_cliente = Column("id_cliente", ForeignKey("clientes.id"), nullable=False)
     
-    def __init__(self, data, valor, pagamento, id_cliente):
+    def __init__(self, data, valor, frete, pagamento, id_cliente):
         self.data = data
         self.valor = valor
+        self.frete = frete
         self.pagamento = pagamento
         self.id_cliente = id_cliente
 
@@ -107,7 +108,7 @@ class Admin(Base):
     
     id = Column("id", Integer, primary_key=True, autoincrement=True)
     nome = Column("nome", String, nullable=False)
-    email = Column("email", String, nullable=False)
+    email = Column("email", String, nullable=False, unique=True)
     senha = Column("senha", String, nullable=False)
     
     def __init__(self, nome, email, senha):

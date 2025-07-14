@@ -52,7 +52,7 @@ class ClienteSchema(BaseModel):
 class PedidoPizzaSchema(BaseModel):
     id_pedido: int
     id_pizza: int
-    quntidade: int
+    quantidade: int
     
     class Config:
         from_attributes = True
