@@ -1,6 +1,6 @@
 from models import Admin
 from sqlalchemy.orm import Session
-from password_bcrypt import bcrypt_context
+from .password_bcrypt import bcrypt_context
 
 async def auth_admin(email:str, senha:str, session:Session):
     

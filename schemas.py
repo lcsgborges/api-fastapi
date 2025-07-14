@@ -7,6 +7,7 @@ class AdminSchema(BaseModel):
     nome: str
     email: str
     senha: str
+    senha2: str
     
     class Config:
         from_attributes = True
@@ -71,4 +72,13 @@ class LoginSchema(BaseModel):
     email: str
     senha: str
     
-    class Config: from_attributes = True
+    class Config: 
+        from_attributes = True
+    
+
+class DeleteAdminSchema(BaseModel):
+    email: str
+    senha: str
+    
+    class Config:
+        from_attributes = True
