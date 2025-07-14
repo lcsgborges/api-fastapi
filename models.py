@@ -101,3 +101,16 @@ class PedidoRefrigerante(Base):
         self.id_refrigerante = id_refrigerante
         self.quantidade = quantidade
         
+
+class Admin(Base):
+    __tablename__ = 'admins'
+    
+    id = Column("id", Integer, primary_key=True, autoincrement=True)
+    nome = Column("nome", String, nullable=False)
+    email = Column("email", String, nullable=False)
+    senha = Column("senha", String, nullable=False)
+    
+    def __init__(self, nome, email, senha):
+        self.nome = nome
+        self.email = email
+        self.senha = senha
