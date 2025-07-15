@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from models import Admin
-from schemas import AdminSchema, LoginSchema, DeleteAdminSchema
+from schemas import AdminSchema, LoginSchema, DeleteAdminSchema, UpdatePasswordSchema
 from dependencies import get_session
 from services.password_bcrypt import bcrypt_context
 from services.auth_admin import auth_admin
@@ -61,9 +61,35 @@ async def delete_admin(delete_admin_schema:DeleteAdminSchema, session:Session=De
         raise HTTPException(status_code=404, detail="Senha incorreta!")
     
     else:
-        row = session.query(Admin).filter(Admin.email== admin.email).delete(synchronize_session="fetch")
+        success = session.query(Admin).filter(Admin.email== admin.email).delete(synchronize_session="fetch")
         session.commit()
-        if row >= 1:
+        if success:
             return {"detail": "Sua conta foi excluida com sucesso!"}
         else:
-            raise HTTPException(status_code=400, detail="Erro ao excluir sua conta")
+            raise HTTPException(status_code=500,  detail="Internal server error")
+
+
+@auth_router.patch("/update/password")
+async def update_password(update_password_schema:UpdatePasswordSchema, session:Session=Depends(get_session)):
+    """
+    Rota para atualizar a senha de um admin
+    """
+
+    admin = await auth_admin(update_password_schema.email, update_password_schema.senha_antiga, session)
+     
+    if not admin:
+         raise HTTPException(status_code=404, detail="Senha incorreta")
+    
+    else:
+        if update_password_schema.nova_senha != update_password_schema.nova_senha2:
+            raise HTTPException(status_code=401, detail="As senhas não coincidem")
+        
+        senha_cript = bcrypt_context.hash(update_password_schema.nova_senha)
+        
+        success = session.query(Admin).filter(Admin.email == admin.email).update({Admin.senha: senha_cript},synchronize_session="fetch")
+        session.commit()
+        
+        if success:
+            return {"detail": "Sua senha foi atualizada com sucesso"}
+        else:
+            raise HTTPException(status_code=500, detail="Internal server error")

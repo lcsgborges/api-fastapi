@@ -82,3 +82,13 @@ class DeleteAdminSchema(BaseModel):
     
     class Config:
         from_attributes = True
+        
+
+class UpdatePasswordSchema(BaseModel):
+    email: str
+    senha_antiga: str
+    nova_senha: str
+    nova_senha2: str
+    
+    class Config:
+        from_attributes = True

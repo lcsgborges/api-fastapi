@@ -35,10 +35,6 @@ build/
 dist/
 *.egg-info/
 
-# dotenv
-*.env
-.env.*
-
 # SQLite databases
 *.sqlite3
 
